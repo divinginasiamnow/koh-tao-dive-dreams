@@ -44,7 +44,7 @@ const About = () => {
           </div>
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              src="https://images.unsplash.com/photo-1582967788606-a171c1080cb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               alt="Whale shark in Koh Tao waters"
               className="rounded-lg shadow-2xl"
             />
