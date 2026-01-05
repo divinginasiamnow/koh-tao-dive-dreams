@@ -125,7 +125,7 @@ export const supabase = {
         },
         maybeSingle: async () => {
           await initializeDB();
-          let sql = `SELECT ${query.columns} FROM ${query.table}`;
+          let `sql = `SELECT ${query.columns} FROM ${query.table}`;
           const params: any[] = [];
           query.filters.forEach((f: any) => {
             sql += ` WHERE ${f.column} ${f.op} ?`;
