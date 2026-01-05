@@ -205,7 +205,7 @@ const Contact = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>&copy; 2024 Koh Tao Diving. All rights reserved.</p>
+          <p>&copy; 2026 Pro Diving Asia. All rights reserved.</p>
           <p className="mt-2">Discover the magic beneath the waves in Thailand's diving paradise.</p>
         </div>
       </div>
