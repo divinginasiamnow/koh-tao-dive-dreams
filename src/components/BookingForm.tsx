@@ -9,7 +9,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const bookingSchema = z.object({
@@ -48,36 +47,25 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from('booking_inquiries').insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone || null,
-        course_title: `${itemType === 'dive' ? 'Dive Site: ' : ''}${itemTitle}`,
-        preferred_date: data.preferred_date || null,
-        experience_level: data.experience_level || null,
-        message: data.message || null,
+      const response = await fetch('http://localhost:3001/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          course_title: `${itemType === 'dive' ? 'Dive Site: ' : ''}${itemTitle}`,
+          preferred_date: data.preferred_date || null,
+          experience_level: data.experience_level || null,
+          message: data.message || null,
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error('Failed to submit booking');
 
-      // Trigger email notification
-      try {
-        await supabase.functions.invoke('send-booking-notification', {
-          body: {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            itemType,
-            itemTitle,
-            preferred_date: data.preferred_date,
-            experience_level: data.experience_level,
-            message: data.message,
-          },
-        });
-      } catch (emailError) {
-        console.error('Email notification failed:', emailError);
-        // Don't fail the whole operation if email fails
-      }
+      // Email is sent by the server
 
       toast.success('Booking inquiry submitted successfully! We\'ll get back to you soon.');
       form.reset();
