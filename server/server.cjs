@@ -40,8 +40,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.SMTP_USER || 'your_correct_smtp_username@onemedia.asia',
-    pass: process.env.SMTP_PASS || 'your_correct_smtp_password',
+    user: process.env.SMTP_USER || 'peter@onemedia.asia',
+    pass: process.env.SMTP_PASS || 'Md10is12usenow.',
   },
 });
 
