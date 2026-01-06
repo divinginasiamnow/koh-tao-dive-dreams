@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { toast } from 'sonner';
 import emailjs from '@emailjs/browser';
+import { supabase } from '@/integrations/supabase/client';
 
 const bookingSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -58,7 +59,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
         message: data.message || null,
       };
 
-      // Send email using EmailJS
+      // Save booking and send admin notification
+      const { error } = await supabase.functions.invoke('bookings', {
+        body: bookingData
+      });
+      if (error) throw error;
+
+      // Send confirmation email to client
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
@@ -70,7 +77,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
           preferred_date: bookingData.preferred_date,
           experience_level: bookingData.experience_level,
           message: bookingData.message,
-          to_email: 'peter@onemedia.asia', // or from env
+          to_email: bookingData.email, // Send confirmation to client
         },
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );

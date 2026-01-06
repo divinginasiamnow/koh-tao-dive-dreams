@@ -52,7 +52,7 @@ serve(async (req) => {
 
     const mailOptions = {
       from: Deno.env.get('SMTP_USER'),
-      to: 'info@koh-tao-dive-dreams.com', // or from env
+      to: 'onemediaasia@duck.com',
       subject: `New Booking Inquiry: ${course_title}`,
       html: `
         <h2>New Booking Inquiry</h2>
