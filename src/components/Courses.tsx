@@ -65,7 +65,7 @@ const Courses = () => {
     return levelColors[level] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
   return <section id="courses" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 sm:px-[2px]">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 sm:px-[24px]">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             {t('courses.title')}
