@@ -91,7 +91,7 @@ app.post('/api/bookings', async (req, res) => {
     try {
       const adminMailOptions = {
         from: '"Dive School Bookings" <bookingbas@onemedia.asia>',
-        to: 'bas@divinginasia.com',
+        to: 'bas@prodiving.asia',
         subject: `🆕 New Booking Inquiry: ${course_title}`,
         priority: 'high',
         headers: {
