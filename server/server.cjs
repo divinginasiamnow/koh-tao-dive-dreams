@@ -46,7 +46,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.SMTP_USER || 'peter@onemedia.asia',
+    user: process.env.SMTP_USER || 'bas@prodiving.asia',
     pass: process.env.SMTP_PASS || 'Md10is12usenow.',
   },
 });
@@ -172,7 +172,7 @@ app.post('/api/contact', (req, res) => {
 
     // Send email notification
     const mailOptions = {
-      from: process.env.SMTP_USER || 'peter@onemedia.asia',
+      from: process.env.SMTP_USER || 'bas@prodiving.asia',
       to: 'bas@prodiving.asia',
       subject: `Contact Form: ${subject}`,
       html: `
