@@ -50,8 +50,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.SMTP_USER || 'bookingbas@onemedia.asia',
-    pass: process.env.SMTP_PASS || 'Fd~6BQj?#6I',
+    user: process.env.SMTP_USER || 'bas@divinginasia.com',
+    pass: process.env.SMTP_PASS || 'Md10is12usenow.',
   },
 });
 
@@ -90,7 +90,7 @@ app.post('/api/bookings', async (req, res) => {
     // Send admin notification email
     try {
       const adminMailOptions = {
-        from: '"Dive School Bookings" <bookingbas@onemedia.asia>',
+        from: process.env.SMTP_USER || 'bas@divinginasia.com',
         to: 'bas@divinginasia.com',
         subject: `🆕 New Booking Inquiry: ${course_title}`,
         priority: 'high',
@@ -299,7 +299,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Send email notification
     const mailOptions = {
-      from: '"Dive School Contact" <bookingbas@onemedia.asia>',
+      from: process.env.SMTP_USER || 'bas@divinginasia.com',
       to: 'bas@divinginasia.com',
       subject: `📩 Contact Form: ${subject}`,
       priority: 'high',
