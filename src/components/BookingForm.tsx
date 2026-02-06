@@ -10,6 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS
+emailjs.init(import.meta.env.VITE_EMAILJS_SERVICE_ID);
 
 const bookingSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -47,28 +51,22 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true);
     try {
-      const bookingData = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone || null,
+      const templateParams = {
+        to_email: 'bas@divinginasia.com',
+        from_email: data.email,
+        customer_name: data.name,
+        phone: data.phone || 'Not provided',
         course_title: `${itemType === 'dive' ? 'Dive Site: ' : ''}${itemTitle}`,
-        preferred_date: data.preferred_date || null,
-        experience_level: data.experience_level || null,
-        message: data.message || null,
+        preferred_date: data.preferred_date || 'Not specified',
+        experience_level: data.experience_level || 'Not specified',
+        message: data.message || 'No additional message',
       };
 
-      // Send booking to backend API
-      const response = await fetch('http://localhost:3001/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit booking');
-      }
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
 
       toast.success('Booking inquiry submitted successfully! We\'ll get back to you soon.');
       form.reset();
