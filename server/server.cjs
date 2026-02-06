@@ -84,8 +84,8 @@ app.post('/api/bookings', (req, res) => {
 
     // Send email notification
     const mailOptions = {
-      from: process.env.SMTP_USER || 'bas@divinginasia.com',
-      to: 'bas@divinginasia.com',
+      from: process.env.SMTP_USER || 'contact@divinginasia.com',
+      to: process.env.SMTP_USER || 'contact@divinginasia.com',
       subject: 'New Booking Inquiry',
       html: `
         <h2>New Booking Inquiry from diving in asia</h2>
@@ -172,8 +172,8 @@ app.post('/api/contact', (req, res) => {
 
     // Send email notification
     const mailOptions = {
-      from: process.env.SMTP_USER || 'bas@divinginasia.com',
-      to: 'bas@divinginasia.com',
+      from: process.env.SMTP_USER || 'contact@divinginasia.com',
+      to: process.env.SMTP_USER || 'contact@divinginasia.com',
       subject: `Contact Form: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>

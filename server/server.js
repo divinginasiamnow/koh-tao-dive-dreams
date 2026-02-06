@@ -50,7 +50,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.SMTP_USER || 'bas@divinginasia.com',
+    user: process.env.SMTP_USER || 'contact@divinginasia.com',
     pass: process.env.SMTP_PASS || 'Md10is12usenow.',
   },
 });
@@ -88,10 +88,10 @@ app.post('/api/bookings', async (req, res) => {
     console.log('Database insert result:', result);
 
     // Send admin notification email
-    try {
+      try {
       const adminMailOptions = {
-        from: process.env.SMTP_USER || 'bas@divinginasia.com',
-        to: 'bas@divinginasia.com',
+        from: process.env.SMTP_USER || 'contact@divinginasia.com',
+        to: process.env.SMTP_USER || 'contact@divinginasia.com',
         subject: `🆕 New Booking Inquiry: ${course_title}`,
         priority: 'high',
         headers: {
@@ -299,8 +299,8 @@ app.post('/api/contact', async (req, res) => {
 
     // Send email notification
     const mailOptions = {
-      from: process.env.SMTP_USER || 'bas@divinginasia.com',
-      to: 'bas@divinginasia.com',
+      from: process.env.SMTP_USER || 'contact@divinginasia.com',
+      to: process.env.SMTP_USER || 'contact@divinginasia.com',
       subject: `📩 Contact Form: ${subject}`,
       priority: 'high',
       headers: {
