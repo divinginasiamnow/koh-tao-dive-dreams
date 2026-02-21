@@ -37,7 +37,7 @@ const Navigation = () => {
   ];
 
   const navItems = [
-    { name: t('nav.home'), href: '#home' },
+    { name: t('nav.home'), href: '/' },
     { name: t('nav.gallery'), href: '#gallery' },
     { name: t('nav.contact'), href: 'https://www.divinginasia.com/#contact', external: true },
   ];
@@ -52,7 +52,7 @@ const Navigation = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
+            <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
               {t('nav.home')}
             </a>
 
