@@ -28,6 +28,18 @@ import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import MarineLifePage from "./pages/MarineLifePage";
+import Whaleshark from "./pages/Whaleshark";
+import GreenSeaTurtle from "./pages/GreenSeaTurtle";
+import HawksbillSeaTurtle from "./pages/HawksbillSeaTurtle";
+import GreatBarracuda from "./pages/GreatBarracuda";
+import BlackTipReefShark from "./pages/BlackTipReefShark";
+import MalabarGrouper from "./pages/MalabarGrouper";
+import Cephalopods from "./pages/Cephalopods";
+import BandedSeaKrait from "./pages/BandedSeaKrait";
+import BeardedScorpionFish from "./pages/BeardedScorpionFish";
+import Nudibranchs from "./pages/Nudibranchs";
+import AccommodationsPage from "./pages/AccommodationsPage";
 import "./i18n";
 
 const queryClient = new QueryClient();
@@ -54,6 +66,18 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/fun-diving-koh-tao" element={<FunDiving />} />
           <Route path="/koh-tao-dive-sites" element={<DiveSitesPage />} />
+          <Route path="/marine-life" element={<MarineLifePage />} />
+          <Route path="/marine-life/whaleshark" element={<Whaleshark />} />
+          <Route path="/marine-life/green-sea-turtle" element={<GreenSeaTurtle />} />
+          <Route path="/marine-life/hawksbill-sea-turtle" element={<HawksbillSeaTurtle />} />
+          <Route path="/marine-life/great-barracuda" element={<GreatBarracuda />} />
+          <Route path="/marine-life/black-tip-reef-shark" element={<BlackTipReefShark />} />
+          <Route path="/marine-life/malabar-grouper" element={<MalabarGrouper />} />
+          <Route path="/marine-life/cephalopods" element={<Cephalopods />} />
+          <Route path="/marine-life/banded-sea-krait" element={<BandedSeaKrait />} />
+          <Route path="/marine-life/bearded-scorpion-fish" element={<BeardedScorpionFish />} />
+          <Route path="/marine-life/nudibranchs" element={<Nudibranchs />} />
+          <Route path="/koh-tao/accommodation" element={<AccommodationsPage />} />
           <Route path="/dive-sites/sail-rock" element={<SailRock />} />
           <Route path="/dive-sites/chumphon-pinnacle" element={<ChumphonPinnacle />} />
           <Route path="/dive-sites/japanese-gardens" element={<JapaneseGardens />} />

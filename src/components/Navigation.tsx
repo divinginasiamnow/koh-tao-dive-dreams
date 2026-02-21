@@ -9,6 +9,7 @@ const Navigation = () => {
   const [coursesOpen, setCoursesOpen] = useState(false);
   const [funDivingOpen, setFunDivingOpen] = useState(false);
   const [diveSitesOpen, setDiveSitesOpen] = useState(false);
+  const [marineLifeOpen, setMarineLifeOpen] = useState(false);
   const { t } = useTranslation();
 
   const courseCategories = [
@@ -34,6 +35,20 @@ const Navigation = () => {
       ],
     },
     
+  ];
+
+  const marineLifeItems = [
+    { name: 'All Marine Life Overview', to: '/marine-life' },
+    { name: 'Whaleshark', to: '/marine-life/whaleshark' },
+    { name: 'Green Sea Turtle', to: '/marine-life/green-sea-turtle' },
+    { name: 'Hawksbill Sea Turtle', to: '/marine-life/hawksbill-sea-turtle' },
+    { name: 'Great Barracuda', to: '/marine-life/great-barracuda' },
+    { name: 'Black Tip Reef Shark', to: '/marine-life/black-tip-reef-shark' },
+    { name: 'Malabar Grouper', to: '/marine-life/malabar-grouper' },
+    { name: 'Cephalopods', to: '/marine-life/cephalopods' },
+    { name: 'Banded Sea Krait', to: '/marine-life/banded-sea-krait' },
+    { name: 'Bearded Scorpion Fish', to: '/marine-life/bearded-scorpion-fish' },
+    { name: 'Nudibranchs', to: '/marine-life/nudibranchs' },
   ];
 
   const navItems = [
@@ -172,6 +187,36 @@ const Navigation = () => {
                         Mango Bay
                       </Link>
                     </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Marine Life dropdown */}
+            <div className="relative group">
+              <Link
+                to="/marine-life"
+                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium flex items-center gap-1"
+              >
+                {t('nav.marineLife')}
+                <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:rotate-90" />
+              </Link>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-[#0b1e3d] rounded-lg shadow-2xl border border-[#1a3a5c] min-w-[300px] p-5">
+                  <h4 className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-3 border-b border-[#1a3a5c] pb-2">
+                    Marine Life
+                  </h4>
+                  <ul className="space-y-1">
+                    {marineLifeItems.map((item) => (
+                      <li key={item.to}>
+                        <Link
+                          to={item.to}
+                          className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
