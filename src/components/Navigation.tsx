@@ -15,22 +15,22 @@ const Navigation = () => {
     {
       label: 'Beginner Courses',
       items: [
-        { name: t('courses.openWater.title'), href: '#course-openWater' },
+        { name: t('courses.openWater.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-openWater' },
       ],
     },
     {
       label: 'Advanced Courses',
       items: [
-        { name: t('courses.advanced.title'), href: '#course-advanced' },
-        { name: t('courses.efr.title'), href: '#course-efr' },
-        { name: t('courses.rescue.title'), href: '#course-rescue' },
+        { name: t('courses.advanced.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-advanced' },
+        { name: t('courses.efr.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-efr' },
+        { name: t('courses.rescue.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-rescue' },
       ],
     },
     {
       label: 'Pro Level Courses',
       items: [
-        { name: t('courses.divemaster.title'), href: '#course-divemaster' },
-        { name: t('courses.instructor.title'), href: '#course-instructor' },
+        { name: t('courses.divemaster.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-divemaster' },
+        { name: t('courses.instructor.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-instructor' },
       ],
     },
   ];
@@ -58,7 +58,7 @@ const Navigation = () => {
             {/* Courses mega dropdown */}
             <div className="relative group">
               <a
-                href="#courses"
+                href="https://divinginasia.com/koh-tao-dive-sites#courses"
                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium flex items-center gap-1"
               >
                 {t('nav.courses')}
