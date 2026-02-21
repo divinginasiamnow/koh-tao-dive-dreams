@@ -14,6 +14,7 @@ import Rescue from "./pages/Rescue";
 import Divemaster from "./pages/Divemaster";
 import Instructor from "./pages/Instructor";
 import FunDiving from "./pages/FunDiving";
+import Signup from "./pages/Signup";
 import Courses from "./components/Courses";
 import ProLevelCourses from "./pages/ProLevelCourses";
 import SpecialtyDetail from "./pages/SpecialtyDetail";
@@ -91,6 +92,7 @@ const App = () => (
           <Route path="/courses/divemaster" element={<Divemaster />} />
           <Route path="/courses/instructor" element={<Instructor />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/courses/pro-level" element={<ProLevelCourses />} />
           <Route path="/courses/specialties/:slug" element={<SpecialtyDetail />} />
           <Route path="/booking" element={<BookingPage />} />
