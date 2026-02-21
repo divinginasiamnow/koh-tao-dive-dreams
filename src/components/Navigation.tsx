@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+  import React, { useState } from 'react';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -37,9 +37,9 @@ const Navigation = () => {
   ];
 
   const navItems = [
-    { name: t('nav.home'), href: 'https://www.divinginasia.com/#home' },
-    { name: t('nav.gallery'), href: 'https://www.divinginasia.com/#gallery' },
-    { name: t('nav.contact'), href: 'https://www.divinginasia.com/#contact', external: true },
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.gallery'), href: '/#gallery' },
+    { name: t('nav.contact'), href: '/#contact' },
   ];
 
   return (
@@ -52,7 +52,7 @@ const Navigation = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="https://www.divinginasia.com/#home" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
+            <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
               {t('nav.home')}
             </a>
 
@@ -104,7 +104,7 @@ const Navigation = () => {
             {/* Dive Sites dropdown */}
             <div className="relative group">
               <a
-                href="https://www.divinginasia.com/#dive-sites"
+                href="#dive-sites"
                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium flex items-center gap-1"
               >
                 {t('nav.diveSites')}
@@ -202,7 +202,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="https://www.divinginasia.com/#schedule"
+                        href="/fun-diving-koh-tao#schedule"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Boat Schedule
@@ -210,7 +210,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="https://www.divinginasia.com/#pricing"
+                        href="/fun-diving-koh-tao#pricing"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Pricing & Packages
@@ -218,7 +218,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="https://www.divinginasia.com/#requirements"
+                        href="/fun-diving-koh-tao#requirements"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Diver Requirements
@@ -226,7 +226,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="https://www.divinginasia.com/#tips"
+                        href="/fun-diving-koh-tao#tips"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Choosing a Dive Center
@@ -258,7 +258,7 @@ const Navigation = () => {
         {isOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#home" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={() => setIsOpen(false)}>
+              <a href="/" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={() => setIsOpen(false)}>
                 {t('nav.home')}
               </a>
 
