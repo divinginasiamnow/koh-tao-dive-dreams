@@ -99,7 +99,7 @@ const OpenWater: React.FC = () => {
 
         <section className="mt-12">
           <h3 className="text-2xl font-semibold mb-4">Booking & Next Steps</h3>
-          <p className="mb-4">To book, complete the form below or contact us directly. We'll confirm available dates and any prerequisites.</p>
+          <p className="mb-4">To book, you can <a href="https://www.divinginasia.com/#contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">get in touch</a> for an enquiry, or use the booking form at the bottom of this page to send a request directly. We'll confirm available dates and any prerequisites.</p>
         </section>
 
         <section className="mt-8">
