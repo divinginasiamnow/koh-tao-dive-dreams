@@ -4,8 +4,6 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // Import local images
-import reefImage from '@/assets/reef.png';
-import boatImage from '@/assets/boat.png';
 
 const Gallery = () => {
   const { t } = useTranslation();
@@ -13,17 +11,17 @@ const Gallery = () => {
 
   const images = [
     {
-      src: reefImage,
+      src: "/images/photo-1613853250147-2f73e55c1561.avif",
       alt: "Underwater scene in Koh Tao",
       category: "Marine Life"
     },
     {
-      src: boatImage,
+      src: "/images/photo-1682687982423-295485af248a.avif",
       alt: "Divers on boat preparing for dive",
       category: "Diving"
     },
     {
-      src: reefImage,
+      src: "/images/photo-1647825194145-2d94e259c745.avif",
       alt: "Colorful coral reef with tropical fish",
       category: "Coral Reefs"
     },
