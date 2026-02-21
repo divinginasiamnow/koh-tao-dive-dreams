@@ -37,9 +37,9 @@ const Navigation = () => {
   ];
 
   const navItems = [
-    { name: t('nav.home'), href: 'https://divinginasia.com' },
-    { name: t('nav.gallery'), href: '#gallery' },
-    { name: t('nav.contact'), href: '#contact', external: true },
+    { name: t('nav.home'), href: 'https://www.divinginasia.com/#home' },
+    { name: t('nav.gallery'), href: 'https://www.divinginasia.com/#gallery' },
+    { name: t('nav.contact'), href: 'https://www.divinginasia.com/#contact', external: true },
   ];
 
   return (
@@ -52,7 +52,7 @@ const Navigation = () => {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
+            <a href="https://www.divinginasia.com/#home" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
               {t('nav.home')}
             </a>
 
@@ -104,7 +104,7 @@ const Navigation = () => {
             {/* Dive Sites dropdown */}
             <div className="relative group">
               <a
-                href="#dive-sites"
+                href="https://www.divinginasia.com/#dive-sites"
                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium flex items-center gap-1"
               >
                 {t('nav.diveSites')}
@@ -202,7 +202,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="/fun-diving-koh-tao#schedule"
+                        href="https://www.divinginasia.com/#schedule"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Boat Schedule
@@ -210,7 +210,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="/fun-diving-koh-tao#pricing"
+                        href="https://www.divinginasia.com/#pricing"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Pricing & Packages
@@ -218,7 +218,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="/fun-diving-koh-tao#requirements"
+                        href="https://www.divinginasia.com/#requirements"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Diver Requirements
@@ -226,7 +226,7 @@ const Navigation = () => {
                     </li>
                     <li>
                       <a
-                        href="/fun-diving-koh-tao#tips"
+                        href="https://www.divinginasia.com/#tips"
                         className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150"
                       >
                         Choosing a Dive Center
