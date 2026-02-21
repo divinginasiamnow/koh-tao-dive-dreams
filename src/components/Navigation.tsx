@@ -37,7 +37,7 @@ const Navigation = () => {
   ];
 
   const navItems = [
-    { name: t('nav.home'), href: '/' },
+    { name: t('nav.home'), href: 'https://divinginasia.com' },
     { name: t('nav.gallery'), href: '/#gallery' },
     { name: t('nav.contact'), href: '/#contact' },
   ];
