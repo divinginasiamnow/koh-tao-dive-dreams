@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const Navigation = () => {
@@ -126,6 +127,10 @@ const Navigation = () => {
               </div>
             </div>
 
+            <Link to="/fun-diving-koh-tao" className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
+              Fun Diving
+            </Link>
+
             {navItems.slice(1).map((item) => (
               <a key={item.name} href={item.href} className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">
                 {item.name}
@@ -194,6 +199,10 @@ const Navigation = () => {
                   </div>
                 )}
               </div>
+
+              <Link to="/fun-diving-koh-tao" className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={() => setIsOpen(false)}>
+                Fun Diving
+              </Link>
 
               {navItems.slice(1).map((item) => (
                 <a key={item.name} href={item.href} className="block px-3 py-2 text-gray-700 hover:text-blue-600" onClick={() => setIsOpen(false)}>

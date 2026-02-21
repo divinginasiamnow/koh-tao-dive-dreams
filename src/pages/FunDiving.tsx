@@ -1,0 +1,264 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import BookingForm from '../components/BookingForm';
+import Navigation from '../components/Navigation';
+import { Fish, Waves, MapPin, Clock, DollarSign, Users } from 'lucide-react';
+
+const FunDiving = () => {
+  const diveSites = [
+    {
+      name: "Sail Rock",
+      description: "Premier deep dive site with large schools of fish, whalesharks, and giant barracuda.",
+      depth: "18-40m",
+      highlights: ["Whalesharks", "Giant Barracuda", "Malabar Grouper"]
+    },
+    {
+      name: "Chumphon Pinnacles",
+      description: "Granite pinnacles offering excellent opportunities to see whalesharks and large schools of trevally.",
+      depth: "15-30m",
+      highlights: ["Whalesharks", "Trevally Schools", "Eagle Rays"]
+    },
+    {
+      name: "Japanese Gardens",
+      description: "Diverse coral reefs with colorful marine life and swim-throughs.",
+      depth: "12-25m",
+      highlights: ["Pink Tailed Triggerfish", "Ocellated Eagle Rays", "Colorful Corals"]
+    },
+    {
+      name: "Mango Bay",
+      description: "Shallow coral reefs perfect for relaxed diving with abundant marine life.",
+      depth: "5-18m",
+      highlights: ["Green Sea Turtles", "Colorful Corals", "Tropical Fish"]
+    }
+  ];
+
+  const marineLife = [
+    { name: "Whalesharks", description: "Gentle giants that can be spotted at Sail Rock and Chumphon Pinnacles" },
+    { name: "Green Sea Turtles", description: "Common sightings in shallow bays and coral reefs" },
+    { name: "Reef Squid", description: "Colorful cephalopods often seen in deeper waters" },
+    { name: "Marbled Octopus", description: "Small but fascinating creatures in macro environments" }
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-teal-600">
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center text-white px-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">Fun Diving Koh Tao</h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Experience the best of Koh Tao's underwater world with our expertly guided fun diving trips.
+            Discover vibrant coral reefs, encounter amazing marine life, and create unforgettable memories.
+          </p>
+          <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg">
+            Book Your Fun Dive
+          </Button>
+        </div>
+      </section>
+
+      {/* Introduction */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-6">Where to Go Fun Diving in Thailand</h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              Koh Tao provides all this and more at a variety of dive sites ranging from shallow coral reefs
+              to deeper outlying granite pinnacles. Our experienced dive team will provide you with a
+              bespoke, relaxed and enjoyable fun diving experience tailored to your skill level.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="text-center">
+              <CardHeader>
+                <Waves className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <CardTitle>25+ Dive Sites</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>From shallow bays to deep pinnacles, something for every diver</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardHeader>
+                <Fish className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <CardTitle>Abundant Marine Life</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Whalesharks, turtles, rays, and colorful tropical fish</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardHeader>
+                <Users className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <CardTitle>Expert Guides</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>PADI professionals with deep knowledge of local reefs</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Dive Sites */}
+      <section className="py-16 px-4 bg-muted/50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">Best Koh Tao Fun Diving Trips</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {diveSites.map((site, index) => (
+              <Card key={index} className="overflow-hidden">
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <MapPin className="w-5 h-5 text-blue-600" />
+                    <CardTitle className="text-xl">{site.name}</CardTitle>
+                    <Badge variant="secondary">{site.depth}</Badge>
+                  </div>
+                  <CardDescription>{site.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {site.highlights.map((highlight, i) => (
+                      <Badge key={i} variant="outline">{highlight}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Marine Life */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">Explore the Underwater World</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {marineLife.map((animal, index) => (
+              <Card key={index} className="text-center">
+                <CardHeader>
+                  <CardTitle className="text-lg">{animal.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">{animal.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Boat Schedule & Pricing */}
+      <section className="py-16 px-4 bg-muted/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-4xl font-bold mb-8">Fun Diving Boat Schedule</h2>
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-blue-600" />
+                      <CardTitle className="text-lg">Morning Trips</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Daily departures at 8:00 AM and 10:00 AM</p>
+                    <p className="text-sm text-muted-foreground mt-2">2 dives per trip</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-blue-600" />
+                      <CardTitle className="text-lg">Afternoon Trips</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Daily departures at 1:00 PM</p>
+                    <p className="text-sm text-muted-foreground mt-2">2 dives per trip</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-blue-600" />
+                      <CardTitle className="text-lg">Sail Rock Special</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Wednesday & Saturday at 6:30 AM</p>
+                    <p className="text-sm text-muted-foreground mt-2">Full day trip with lunch</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-4xl font-bold mb-8">Pricing</h2>
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-5 h-5 text-green-600" />
+                      <CardTitle className="text-lg">Standard Fun Dive</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold text-green-600">฿2,000</p>
+                    <p className="text-sm text-muted-foreground">per trip (2 dives)</p>
+                    <ul className="mt-4 space-y-2 text-sm">
+                      <li>• Premium Aqualung equipment</li>
+                      <li>• Experienced dive guide</li>
+                      <li>• Freshwater showers</li>
+                      <li>• Maximum 4 divers per guide</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-5 h-5 text-green-600" />
+                      <CardTitle className="text-lg">Sail Rock Trip</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold text-green-600">฿2,900</p>
+                    <p className="text-sm text-muted-foreground">full day excursion</p>
+                    <ul className="mt-4 space-y-2 text-sm">
+                      <li>• Breakfast & lunch included</li>
+                      <li>• Premium equipment</li>
+                      <li>• Expert guide</li>
+                      <li>• Whale shark opportunities</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Booking Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-8">Book Your Fun Diving Adventure</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Ready to explore Koh Tao's amazing underwater world? Contact us to book your fun diving trip.
+          </p>
+          <BookingForm />
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default FunDiving;
