@@ -6,6 +6,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
+import OpenWater from "./pages/OpenWater";
+import Advanced from "./pages/Advanced";
+import EFR from "./pages/EFR";
+import Rescue from "./pages/Rescue";
+import Divemaster from "./pages/Divemaster";
+import Instructor from "./pages/Instructor";
 import FunDiving from "./pages/FunDiving";
 import DiveSitesPage from "./pages/DiveSitesPage";
 import SailRock from "./pages/SailRock";
@@ -48,6 +54,12 @@ const App = () => (
           <Route path="/dive-sites/htms-sattakut" element={<HTMSSattakut />} />
           <Route path="/dive-sites/shark-island" element={<SharkIsland />} />
           <Route path="/dive-sites/mango-bay" element={<MangoBay />} />
+          <Route path="/courses/open-water" element={<OpenWater />} />
+          <Route path="/courses/advanced" element={<Advanced />} />
+          <Route path="/courses/efr" element={<EFR />} />
+          <Route path="/courses/rescue" element={<Rescue />} />
+          <Route path="/courses/divemaster" element={<Divemaster />} />
+          <Route path="/courses/instructor" element={<Instructor />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

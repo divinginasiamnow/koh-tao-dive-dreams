@@ -15,22 +15,22 @@ const Navigation = () => {
     {
       label: 'Beginner Courses',
       items: [
-        { name: t('courses.openWater.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-openWater' },
+        { name: t('courses.openWater.title'), to: '/courses/open-water' },
       ],
     },
     {
       label: 'Advanced Courses',
       items: [
-        { name: t('courses.advanced.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-advanced' },
-        { name: t('courses.efr.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-efr' },
-        { name: t('courses.rescue.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-rescue' },
+        { name: t('courses.advanced.title'), to: '/courses/advanced' },
+        { name: t('courses.efr.title'), to: '/courses/efr' },
+        { name: t('courses.rescue.title'), to: '/courses/rescue' },
       ],
     },
     {
       label: 'Pro Level Courses',
       items: [
-        { name: t('courses.divemaster.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-divemaster' },
-        { name: t('courses.instructor.title'), href: 'https://divinginasia.com/koh-tao-dive-sites#course-instructor' },
+        { name: t('courses.divemaster.title'), to: '/courses/divemaster' },
+        { name: t('courses.instructor.title'), to: '/courses/instructor' },
       ],
     },
   ];
@@ -57,13 +57,13 @@ const Navigation = () => {
 
             {/* Courses mega dropdown */}
             <div className="relative group">
-              <a
-                href="https://divinginasia.com/koh-tao-dive-sites#courses"
+              <Link
+                to="/courses"
                 className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium flex items-center gap-1"
               >
                 {t('nav.courses')}
                 <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:rotate-90" />
-              </a>
+              </Link>
               <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-[#0b1e3d] rounded-lg shadow-2xl border border-[#1a3a5c] min-w-[520px] p-6 flex gap-8">
                   {courseCategories.map((cat) => (
@@ -73,13 +73,13 @@ const Navigation = () => {
                       </h4>
                       <ul className="space-y-1">
                         {cat.items.map((item) => (
-                          <li key={item.href}>
-                            <a
-                              href={item.href}
+                          <li key={item.to}>
+                            <Link
+                              to={item.to}
                               className="block py-1.5 text-sm text-gray-300 hover:text-white hover:pl-1 transition-all duration-150 uppercase tracking-wide"
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
