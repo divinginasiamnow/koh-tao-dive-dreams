@@ -16,7 +16,7 @@ const SharkIsland = () => {
       visibility="20-30m, excellent clarity"
       marineLife={[
         "Black-tip Reef Sharks",
-        "Turtle population",
+        "Diverse reef fish",
         "Gorgonian sea fans",
         "Soft tree corals",
         "Anthias and anthias",

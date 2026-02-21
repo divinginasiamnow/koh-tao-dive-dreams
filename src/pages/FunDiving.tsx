@@ -2,12 +2,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import BookingForm from '../components/BookingForm';
 import { Fish, Waves, MapPin, Clock, DollarSign, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { getRezdyUrl } from '@/lib/rezdy';
 
 const FunDiving = () => {
-  const [selectedTrip, setSelectedTrip] = React.useState<any | null>(null);
-  const [bookingOpen, setBookingOpen] = React.useState(false);
+  const navigate = useNavigate();
   const diveSites = [
     {
       name: "Sail Rock",
@@ -31,15 +31,15 @@ const FunDiving = () => {
       name: "Mango Bay",
       description: "Shallow coral reefs perfect for relaxed diving with abundant marine life.",
       depth: "5-18m",
-      highlights: ["Green Sea Turtles", "Colorful Corals", "Tropical Fish"]
+      highlights: ["Colorful Corals", "Tropical Fish", "Seagrass Meadows"]
     }
   ];
 
   const marineLife = [
     { name: "Whalesharks", description: "Gentle giants that can be spotted at Sail Rock and Chumphon Pinnacles" },
-    { name: "Green Sea Turtles", description: "Common sightings in shallow bays and coral reefs" },
     { name: "Reef Squid", description: "Colorful cephalopods often seen in deeper waters" },
-    { name: "Marbled Octopus", description: "Small but fascinating creatures in macro environments" }
+    { name: "Marbled Octopus", description: "Small but fascinating creatures in macro environments" },
+    { name: "Diverse Reef Fish", description: "Colorful schools and unique reef species" }
   ];
 
   return (
@@ -89,7 +89,7 @@ const FunDiving = () => {
                 <CardTitle>Abundant Marine Life</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Whalesharks, turtles, rays, and colorful tropical fish</p>
+                <p>Whalesharks, rays, and colorful tropical fish</p>
               </CardContent>
             </Card>
 
@@ -127,7 +127,7 @@ const FunDiving = () => {
                   <li>Premium equipment</li>
                   <li>Max 4 divers per guide</li>
                 </ul>
-                      <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Fun Dive', depositMajor: 500, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
+                      <Button variant="secondary" onClick={() => { const rezdy = getRezdyUrl('Fun Dive'); if (rezdy) window.open(rezdy, '_blank'); else navigate(`/booking?item=${encodeURIComponent('Fun Dive')}&type=dive&deposit=500&currency=THB`); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
 
@@ -147,7 +147,7 @@ const FunDiving = () => {
                   <li>Friendly instructors</li>
                   <li>Equipment & photos available</li>
                 </ul>
-                <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Discover Scuba', depositMajor: 1000, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
+                <Button variant="secondary" onClick={() => { const rezdy = getRezdyUrl('Discover Scuba'); if (rezdy) window.open(rezdy, '_blank'); else navigate(`/booking?item=${encodeURIComponent('Discover Scuba')}&type=dive&deposit=1000&currency=THB`); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
 
@@ -167,7 +167,7 @@ const FunDiving = () => {
                   <li>Experienced guides and briefings</li>
                   <li>Pickup & return to Koh Tao</li>
                 </ul>
-                <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Sail Rock Special', depositMajor: 1500, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
+                <Button variant="secondary" onClick={() => { const rezdy = getRezdyUrl('Sail Rock Special'); if (rezdy) window.open(rezdy, '_blank'); else navigate(`/booking?item=${encodeURIComponent('Sail Rock Special')}&type=dive&deposit=1500&currency=THB`); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
           </div>
@@ -452,14 +452,7 @@ const FunDiving = () => {
           <p className="text-lg text-muted-foreground mb-8">
             Ready to explore Koh Tao's amazing underwater world? Contact us to book your fun diving trip.
           </p>
-          <BookingForm
-            isOpen={bookingOpen}
-            onClose={() => { setBookingOpen(false); setSelectedTrip(null); }}
-            itemType="dive"
-            itemTitle={selectedTrip ? selectedTrip.name : 'Fun Diving'}
-            depositMajor={selectedTrip ? selectedTrip.depositMajor : undefined}
-            depositCurrency={selectedTrip ? selectedTrip.depositCurrency : undefined}
-          />
+          {/* Booking moved to dedicated /booking page */}
         </div>
       </section>
     </div>

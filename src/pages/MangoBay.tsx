@@ -9,14 +9,12 @@ const MangoBay = () => {
       depth="5-18m"
       difficulty="Beginner"
       location="West coast bay"
-      highlights={["Green Sea Turtles", "Colorful Corals", "Reef Fish", "Sea Anemones"]}
-      detailedDescription="Mango Bay is a beautiful shallow dive site located on Koh Tao's west coast, perfect for beginner divers and those seeking a relaxed diving experience. The site features a thriving coral reef ecosystem with colorful hard and soft corals, sea anemones, and abundant marine life. Green sea turtles are frequently sighted grazing on the seagrass beds, and the shallow depths make it ideal for extended dives and multiple visits to the same area. The bay's protected location provides calm waters and excellent visibility, making it perfect for learning diving skills and enjoying the underwater world at a comfortable pace."
+      highlights={["Colorful Corals", "Reef Fish", "Sea Anemones"]}
+      detailedDescription="Mango Bay is a beautiful shallow dive site located on Koh Tao's west coast, perfect for beginner divers and those seeking a relaxed diving experience. The site features a thriving coral reef ecosystem with colorful hard and soft corals, sea anemones, and abundant marine life. The shallow depths make it ideal for extended dives and multiple visits to the same area. The bay's protected location provides calm waters and excellent visibility, making it perfect for learning diving skills and enjoying the underwater world at a comfortable pace."
       bestTime="Year-round, best during calm weather"
       current="Very light, protected bay location"
       visibility="15-25m, good clarity in protected waters"
       marineLife={[
-        "Green Sea Turtles",
-        "Hawksbill Turtles",
         "Colorful reef fish",
         "Clownfish and anemones",
         "Parrotfish and wrasse",
@@ -27,7 +25,7 @@ const MangoBay = () => {
       tips={[
         "Perfect for beginner divers and training",
         "Excellent for snorkeling as well",
-        "Look for turtles in seagrass areas",
+        "Look for seagrass grazers and reef life",
         "Great for underwater photography",
         "Calm waters ideal for learning buoyancy",
         "Multiple coral bommies to explore",

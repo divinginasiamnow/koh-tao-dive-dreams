@@ -24,6 +24,7 @@ import JapaneseGardens from "./pages/JapaneseGardens";
 import HTMSSattakut from "./pages/HTMSSattakut";
 import SharkIsland from "./pages/SharkIsland";
 import MangoBay from "./pages/MangoBay";
+import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/pro-level" element={<ProLevelCourses />} />
           <Route path="/courses/specialties/:slug" element={<SpecialtyDetail />} />
+          <Route path="/booking" element={<BookingPage />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

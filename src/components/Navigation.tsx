@@ -33,12 +33,7 @@ const Navigation = () => {
         { name: t('courses.instructor.title'), to: '/courses/instructor' },
       ],
     },
-    {
-      label: 'Internships',
-      items: [
-        { name: 'Black Turtle — Divemaster Internship', to: 'https://www.blackturtledive.com/scuba-diving-internship/divemaster-internship/' },
-      ],
-    },
+    
   ];
 
   const navItems = [

@@ -54,7 +54,7 @@ const DiveSitesPage = () => {
       name: "Mango Bay",
       description: "Shallow coral reefs perfect for relaxed diving with thriving marine ecosystems.",
       depth: "5-18m",
-      highlights: ["Green Sea Turtles", "Colorful Corals", "Reef Fish", "Sea Anemones"],
+      highlights: ["Colorful Corals", "Reef Fish", "Sea Anemones"],
       difficulty: "Beginner",
       location: "West coast bay"
     }
@@ -106,9 +106,9 @@ const DiveSitesPage = () => {
     },
     {
       name: "Tanote Bay",
-      description: "East side dive site with macro opportunities and sea turtles.",
+      description: "East side dive site with macro opportunities and colorful reef life.",
       depth: "8-15m",
-      highlights: ["Frog Fish", "Pipefish", "Sea Turtles", "Macro Photography"],
+      highlights: ["Frog Fish", "Pipefish", "Macro Photography", "Colorful Reef"],
       difficulty: "Intermediate",
       location: "East coast"
     }
@@ -173,7 +173,7 @@ const DiveSitesPage = () => {
                 <CardTitle>Diverse Marine Life</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Whalesharks, turtles, rays, and coral reefs</p>
+                <p>Whalesharks, rays, and coral reefs</p>
               </CardContent>
             </Card>
 
