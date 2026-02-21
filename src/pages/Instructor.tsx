@@ -1,5 +1,4 @@
 import Contact from '../components/Contact';
-  <Contact />
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
