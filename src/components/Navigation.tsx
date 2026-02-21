@@ -8,6 +8,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
   const [funDivingOpen, setFunDivingOpen] = useState(false);
+  const [diveSitesOpen, setDiveSitesOpen] = useState(false);
   const { t } = useTranslation();
 
   const courseCategories = [
