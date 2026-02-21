@@ -59,6 +59,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
 
       console.log('Sending booking payload to Web3Forms', payload);
 
+      // Send booking inquiry to Web3Forms (keeps a record of the request)
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,9 +70,38 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
       console.log('Web3Forms booking response:', res.status, resp);
 
       if (res.ok && resp.success) {
-        toast.success("Booking inquiry sent! We'll contact you soon.");
-        form.reset();
-        onClose();
+        toast.success("Booking inquiry sent! Preparing payment...");
+        // After recording the inquiry, create a Stripe Checkout session for a fixed deposit
+        try {
+          const checkoutRes = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemTitle,
+              itemType,
+              name: data.name,
+              email: data.email,
+            }),
+          });
+
+          const json = await checkoutRes.json().catch(() => ({}));
+          if (checkoutRes.ok && json.url) {
+            // redirect user to Stripe Checkout
+            window.location.href = json.url;
+            return;
+          } else {
+            const errMsg = json?.error || `HTTP ${checkoutRes.status}`;
+            console.error('Checkout creation failed:', errMsg, json);
+            toast.error('Payment initialization failed. Inquiry was still submitted.');
+            form.reset();
+            onClose();
+          }
+        } catch (err) {
+          console.error('Checkout call failed:', err);
+          toast.error('Payment initialization failed. Inquiry was still submitted.');
+          form.reset();
+          onClose();
+        }
       } else {
         const errMsg = resp?.message || resp?.error || `HTTP ${res.status}`;
         console.error('Web3Forms booking error:', errMsg, resp);
