@@ -15,6 +15,7 @@ import Divemaster from "./pages/Divemaster";
 import Instructor from "./pages/Instructor";
 import FunDiving from "./pages/FunDiving";
 import Courses from "./components/Courses";
+import ProLevelCourses from "./pages/ProLevelCourses";
 import DiveSitesPage from "./pages/DiveSitesPage";
 import SailRock from "./pages/SailRock";
 import ChumphonPinnacle from "./pages/ChumphonPinnacle";
@@ -64,6 +65,7 @@ const App = () => (
           <Route path="/courses/divemaster" element={<Divemaster />} />
           <Route path="/courses/instructor" element={<Instructor />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/pro-level" element={<ProLevelCourses />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

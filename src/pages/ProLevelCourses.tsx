@@ -1,0 +1,77 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import BookingForm from '../components/BookingForm';
+
+const ProLevelCourses: React.FC = () => {
+  const courses = [
+    { title: 'PADI Divemaster Course', path: '/courses/divemaster' },
+    { title: 'PADI Instructor Course', path: '/courses/instructor' },
+    { title: 'EFR Instructor Course' },
+    { title: 'PADI MSDT Program' },
+    { title: 'IDC Staff Instructor' },
+    { title: 'PADI IDC Schedule' },
+    { title: 'Instructor Specialties' },
+    { title: 'AWARE Fish ID' },
+    { title: 'Boat Instructor' },
+    { title: 'Deep Instructor' },
+    { title: 'DPV Instructor' },
+    { title: 'Emergency O2 Provider' },
+    { title: 'Equipment Instructor' },
+    { title: 'Night Diving Instructor' },
+    { title: 'Nitrox Instructor' },
+    { title: 'Search & Recovery' },
+    { title: 'Self Reliant Instructor' },
+    { title: 'Sidemount Instructor' },
+    { title: 'Underwater Naturalist' },
+    { title: 'Underwater Navigator' },
+    { title: 'Wreck Instructor' },
+    { title: 'MSDT Instructor Specialty courses Koh Tao - Sidemount' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <h1 className="text-4xl font-bold mb-6">Pro Level Courses & Instructor Specialties</h1>
+          <p className="text-lg text-muted-foreground mb-10">Professional training programs and instructor specialty courses available on Koh Tao. Click a course to view details or enquire.</p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((c, idx) => (
+              <Card key={idx} className="p-4">
+                <CardHeader>
+                  <CardTitle className="text-lg">{c.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="mb-4">Professional development and instructor-level specialty training.</CardDescription>
+                  <div className="flex gap-3">
+                    {c.path ? (
+                      <Link to={c.path} className="flex-1">
+                        <Button variant="outline" className="w-full">View</Button>
+                      </Link>
+                    ) : (
+                      <Button variant="outline" className="w-full" disabled>Details</Button>
+                    )}
+
+                    <a href="#booking" className="flex-1">
+                      <Button className="w-full">Enquire</Button>
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <section id="booking" className="mt-16">
+            <h2 className="text-2xl font-bold mb-4">Enquire / Book a Pro Course</h2>
+            <p className="text-muted-foreground mb-6">Complete the form below and we'll reply with availability and pricing.</p>
+            <BookingForm isOpen={false} onClose={() => {}} itemType="course" itemTitle="Pro Level Course Inquiry" />
+          </section>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default ProLevelCourses;
