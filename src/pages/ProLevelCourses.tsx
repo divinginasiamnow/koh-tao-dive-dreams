@@ -2,9 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import BookingForm from '../components/BookingForm';
+import { useNavigate } from 'react-router-dom';
 
 const ProLevelCourses: React.FC = () => {
+  const navigate = useNavigate();
   const courses = [
     { title: 'PADI Divemaster Course', path: '/courses/divemaster' },
     { title: 'PADI Instructor Course', path: '/courses/instructor' },
@@ -62,19 +63,17 @@ const ProLevelCourses: React.FC = () => {
                       </Link>
                     )}
 
-                    <a href="#booking" className="flex-1">
-                      <Button className="w-full">Enquire</Button>
-                    </a>
+                    <Button className="w-full flex-1" onClick={() => navigate('/booking')}>Enquire</Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <section id="booking" className="mt-16">
+          <section className="mt-16">
             <h2 className="text-2xl font-bold mb-4">Enquire / Book a Pro Course</h2>
             <p className="text-muted-foreground mb-6">Complete the form below and we'll reply with availability and pricing.</p>
-            <BookingForm isOpen={false} onClose={() => {}} itemType="course" itemTitle="Pro Level Course Inquiry" />
+            <Button onClick={() => navigate('/booking')}>Go to booking page</Button>
           </section>
         </div>
       </section>

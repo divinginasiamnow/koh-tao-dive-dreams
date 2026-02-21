@@ -2,9 +2,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import BookingForm from '../components/BookingForm';
+import { useNavigate } from 'react-router-dom';
 
 const Rescue: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
       <section className="relative h-72 md:h-96 flex items-center" style={{backgroundImage: "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('/images/photo-1682686580849-3e7f67df4015.avif')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
@@ -12,7 +13,7 @@ const Rescue: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold">PADI Rescue Diver</h1>
           <p className="mt-4 max-w-2xl">Develop the skills and confidence to manage dive emergencies and assist others. The Rescue Diver course is an important step for all serious divers.</p>
           <div className="mt-6">
-            <a href="#booking"><Button size="lg">Book Rescue</Button></a>
+            <Button size="lg" onClick={() => navigate('/booking')}>Book Rescue</Button>
           </div>
         </div>
       </section>
@@ -66,7 +67,7 @@ const Rescue: React.FC = () => {
               <CardContent>
                 <p className="text-2xl font-bold text-sky-600 mb-3">฿10,500</p>
                 <p className="text-sm text-muted-foreground mb-4">Includes EFR prerequisite if required</p>
-                <a href="#booking"><Button>Book Rescue</Button></a>
+                <Button onClick={() => navigate('/booking')}>Book Rescue</Button>
               </CardContent>
             </Card>
           </aside>
@@ -77,8 +78,10 @@ const Rescue: React.FC = () => {
           <p className="mb-4">Complete the booking form below to reserve your place. Rescue courses are scheduled regularly — contact us for private sessions.</p>
         </section>
 
-        <section id="booking" className="mt-8">
-          <BookingForm isOpen={false} onClose={() => {}} itemType="course" itemTitle="Rescue Diver" />
+        <section className="mt-8">
+          <div className="prose">
+            <Button onClick={() => navigate('/booking')}>Go to booking page</Button>
+          </div>
         </section>
       </main>
     </div>

@@ -2,9 +2,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import BookingForm from '../components/BookingForm';
+import { useNavigate } from 'react-router-dom';
 
 const Advanced: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
       <section className="relative h-72 md:h-96 flex items-center" style={{backgroundImage: "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('/images/photo-1647825194145-2d94e259c745.avif')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
@@ -12,7 +13,7 @@ const Advanced: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold">Advanced Open Water</h1>
           <p className="mt-4 max-w-2xl">Expand your skills with five Adventure Dives including deep and navigation; perfect for divers who want to explore deeper sites and build confidence.</p>
           <div className="mt-6">
-            <a href="#booking"><Button size="lg">Book Advanced</Button></a>
+            <Button size="lg" onClick={() => navigate('/booking')}>Book Advanced</Button>
           </div>
         </div>
       </section>
@@ -65,7 +66,7 @@ const Advanced: React.FC = () => {
               <CardContent>
                 <p className="text-2xl font-bold text-sky-600 mb-3">฿8,500</p>
                 <p className="text-sm text-muted-foreground mb-4">Includes materials & equipment</p>
-                <a href="#booking"><Button>Book Advanced</Button></a>
+                <Button onClick={() => navigate('/booking')}>Book Advanced</Button>
               </CardContent>
             </Card>
           </aside>
@@ -76,8 +77,10 @@ const Advanced: React.FC = () => {
           <p className="mb-4">Select preferred dates and we'll confirm availability. Contact us for custom schedules.</p>
         </section>
 
-        <section id="booking" className="mt-8">
-          <BookingForm isOpen={false} onClose={() => {}} itemType="course" itemTitle="Advanced Open Water" />
+        <section className="mt-8">
+          <div className="prose">
+            <Button onClick={() => navigate('/booking')}>Go to booking page</Button>
+          </div>
         </section>
       </main>
     </div>

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Eye } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import BookingForm from './BookingForm';
+import { useNavigate } from 'react-router-dom';
 
 const DiveSites = () => {
   const { t } = useTranslation();
-  const [selectedSite, setSelectedSite] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const sites = [
     {
@@ -119,7 +119,7 @@ const DiveSites = () => {
                 </div>
 
                 <button
-                  onClick={() => setSelectedSite(site.name)}
+                  onClick={() => navigate(`/booking?item=${encodeURIComponent(site.name)}&type=dive`)}
                   className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
                 >
                   {t('diveSites.bookButton')}
@@ -129,13 +129,7 @@ const DiveSites = () => {
           ))}
         </div>
       </div>
-
-      <BookingForm
-        isOpen={!!selectedSite}
-        onClose={() => setSelectedSite(null)}
-        itemType="dive"
-        itemTitle={selectedSite || ''}
-      />
+      
     </section>
   );
 };

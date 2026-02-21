@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import BookingForm from '../components/BookingForm';
+import { useNavigate } from 'react-router-dom';
 
 const SPECIALTIES: Record<string, any> = {
   'aware-fish-id': {
@@ -29,6 +29,7 @@ const SPECIALTIES: Record<string, any> = {
 };
 
 const SpecialtyDetail: React.FC = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const data = slug ? SPECIALTIES[slug] : null;
 
@@ -58,10 +59,7 @@ const SpecialtyDetail: React.FC = () => {
                 <p><strong>Deposit:</strong> {data.depositMajor ? `฿${data.depositMajor}` : 'Contact us'}</p>
                 <p className="text-muted-foreground">Detailed curriculum, prerequisites, and certification information available on request.</p>
                 <div className="mt-6">
-                  <BookingForm isOpen={false} onClose={() => {}} itemType="course" itemTitle={data.title} depositMajor={data.depositMajor} depositCurrency={data.depositCurrency} />
-                  <a href="#booking" className="inline-block">
-                    <Button>Enquire / Book</Button>
-                  </a>
+                  <Button onClick={() => navigate(`/booking?item=${encodeURIComponent(data.title)}&deposit=${data.depositMajor || ''}&currency=${data.depositCurrency || ''}`)}>Enquire / Book</Button>
                 </div>
               </div>
             </CardContent>

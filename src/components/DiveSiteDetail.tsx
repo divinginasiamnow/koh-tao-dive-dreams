@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import BookingForm from '../components/BookingForm';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, Waves, Fish, Clock, Eye, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -37,6 +37,7 @@ const DiveSiteDetail: React.FC<DiveSiteDetailProps> = ({
   tips,
   images
 }) => {
+  const navigate = useNavigate();
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Beginner': return 'bg-green-100 text-green-800';
@@ -193,13 +194,13 @@ const DiveSiteDetail: React.FC<DiveSiteDetailProps> = ({
                 <CardTitle>Ready to Dive?</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Experience {name} with our expert guides and premium equipment.
-                </p>
-                <Button className="w-full" size="lg">
-                  Book This Dive Site
-                </Button>
-              </CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Experience {name} with our expert guides and premium equipment.
+                  </p>
+                  <Button className="w-full" size="lg" onClick={() => navigate(`/booking?item=${encodeURIComponent(name)}&type=dive`)}>
+                    Book This Dive Site
+                  </Button>
+                </CardContent>
             </Card>
           </div>
         </div>
@@ -227,7 +228,7 @@ const DiveSiteDetail: React.FC<DiveSiteDetailProps> = ({
             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
               Ready to explore this incredible dive site? Contact us to arrange your diving adventure.
             </p>
-            <BookingForm isOpen={false} onClose={() => {}} itemType="dive" itemTitle={name} />
+            <Button onClick={() => navigate(`/booking?item=${encodeURIComponent(name)}&type=dive`)} className="px-6 py-3 bg-blue-600 text-white rounded-lg">Go to booking page</Button>
           </div>
         </section>
       </div>
