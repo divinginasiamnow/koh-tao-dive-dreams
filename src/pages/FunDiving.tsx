@@ -125,9 +125,7 @@ const FunDiving = () => {
                   <li>Premium equipment</li>
                   <li>Max 4 divers per guide</li>
                 </ul>
-                <a href="#booking" className="inline-block">
-                  <Button variant="secondary">Inquire / Book</Button>
-                </a>
+                      <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Fun Dive', depositMajor: 500, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
 
@@ -147,9 +145,7 @@ const FunDiving = () => {
                   <li>Friendly instructors</li>
                   <li>Equipment & photos available</li>
                 </ul>
-                <a href="#booking" className="inline-block">
-                  <Button variant="secondary">Inquire / Book</Button>
-                </a>
+                <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Discover Scuba', depositMajor: 1000, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
 
@@ -169,9 +165,7 @@ const FunDiving = () => {
                   <li>Experienced guides and briefings</li>
                   <li>Pickup & return to Koh Tao</li>
                 </ul>
-                <a href="#booking" className="inline-block">
-                  <Button variant="secondary">Inquire / Book</Button>
-                </a>
+                <Button variant="secondary" onClick={() => { setSelectedTrip({ name: 'Sail Rock Special', depositMajor: 1500, depositCurrency: 'THB' }); setBookingOpen(true); }}>Inquire / Book</Button>
               </CardContent>
             </Card>
           </div>
@@ -456,7 +450,14 @@ const FunDiving = () => {
           <p className="text-lg text-muted-foreground mb-8">
             Ready to explore Koh Tao's amazing underwater world? Contact us to book your fun diving trip.
           </p>
-          <BookingForm isOpen={false} onClose={() => {}} itemType="dive" itemTitle="Fun Diving" />
+          <BookingForm
+            isOpen={bookingOpen}
+            onClose={() => { setBookingOpen(false); setSelectedTrip(null); }}
+            itemType="dive"
+            itemTitle={selectedTrip ? selectedTrip.name : 'Fun Diving'}
+            depositMajor={selectedTrip ? selectedTrip.depositMajor : undefined}
+            depositCurrency={selectedTrip ? selectedTrip.depositCurrency : undefined}
+          />
         </div>
       </section>
     </div>

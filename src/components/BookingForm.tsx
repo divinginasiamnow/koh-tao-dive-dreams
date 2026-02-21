@@ -18,6 +18,7 @@ const bookingSchema = z.object({
   preferred_date: z.string().optional(),
   experience_level: z.string().optional(),
   message: z.string().trim().max(1000, "Message must be less than 1000 characters").optional(),
+  paymentChoice: z.enum(['now', 'link', 'none']).optional(),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
@@ -43,6 +44,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
       preferred_date: '',
       experience_level: '',
       message: '',
+      paymentChoice: 'now',
     },
   });
 
@@ -51,12 +53,57 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
     try {
       const messageBody = `Phone: ${data.phone || 'N/A'}\nPreferred Date: ${data.preferred_date || 'N/A'}\nExperience Level: ${data.experience_level || 'N/A'}\n\nMessage:\n${data.message || 'N/A'}`;
 
+      const paymentChoice = (data as any).paymentChoice || 'none';
+
+      // If user wants to pay now or receive a payment link, create a Checkout session first
+      let checkoutUrl: string | undefined;
+      if ((paymentChoice === 'now' || paymentChoice === 'link') && typeof depositMajor === 'number' && depositMajor > 0) {
+        try {
+          const body: any = {
+            itemTitle,
+            itemType,
+            name: data.name,
+            email: data.email,
+          };
+
+          body.amountMajor = depositMajor;
+          if (depositCurrency) body.currency = depositCurrency;
+
+          const checkoutRes = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          const json = await checkoutRes.json().catch(() => ({}));
+          if (checkoutRes.ok && json.url) {
+            checkoutUrl = json.url;
+            if (paymentChoice === 'now') {
+              // redirect immediately to Checkout
+              window.location.href = checkoutUrl;
+              return;
+            }
+            // if 'link', we'll include this link in the inquiry email below
+          } else {
+            const errMsg = json?.error || `HTTP ${checkoutRes.status}`;
+            console.error('Checkout creation failed:', errMsg, json);
+            toast.error('Payment initialization failed. You can still submit an inquiry without payment.');
+          }
+        } catch (err) {
+          console.error('Checkout call failed:', err);
+          toast.error('Payment initialization failed. You can still submit an inquiry without payment.');
+        }
+      }
+
+      // If we have a checkout link and user asked for a link, append it to the message
+      const messageWithLink = checkoutUrl ? `${messageBody}\n\nPayment link: ${checkoutUrl}` : messageBody;
+
       const payload = {
         access_key: 'e4c4edf6-6e35-456a-87da-b32b961b449a',
         subject: `Booking Inquiry: ${itemTitle}`,
         name: data.name,
         email: data.email,
-        message: messageBody,
+        message: messageWithLink,
       };
 
       console.log('Sending booking payload to Web3Forms', payload);
