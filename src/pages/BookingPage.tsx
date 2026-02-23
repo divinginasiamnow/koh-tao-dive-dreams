@@ -20,6 +20,7 @@ const bookingSchema = z.object({
   preferred_date: z.string().optional(),
   experience_level: z.string().optional(),
   message: z.string().trim().max(1000).optional(),
+  paymentChoice: z.enum(['now', 'link', 'none']),
 });
 
 
@@ -210,7 +211,7 @@ const       BookingPage: React.FC = () => {
 
             <div className="flex gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => navigate(-1)} className="flex-1">Cancel</Button>
-              <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90">Submit Inquiry</Button>
+              <Button type="submit" onClick={() => console.log('submit button clicked')} className="flex-1 bg-primary hover:bg-primary/90">Submit Inquiry</Button>
             </div>
           </form>
         </Form>
