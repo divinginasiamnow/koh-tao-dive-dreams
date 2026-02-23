@@ -49,7 +49,7 @@ const       BookingPage: React.FC = () => {
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    defaultValues: { name: '', email: '', phone: '', preferred_date: '', experience_level: '', message: '' },
+    defaultValues: { name: '', email: '', phone: '', preferred_date: '', experience_level: '', message: '', paymentChoice: 'now' },
   });
 
   const [showPaymentLinks, setShowPaymentLinks] = useState(false);
@@ -197,6 +197,46 @@ const       BookingPage: React.FC = () => {
                     <SelectItem value="professional">Professional diver</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )} />
+
+            <FormField control={form.control} name="paymentChoice" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Payment option</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="now"
+                        checked={field.value === 'now'}
+                        onChange={() => field.onChange('now')}
+                      />
+                      <span className="ml-2">Pay deposit now</span>
+                    </label>
+
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="link"
+                        checked={field.value === 'link'}
+                        onChange={() => field.onChange('link')}
+                      />
+                      <span className="ml-2">Send payment link to my email</span>
+                    </label>
+
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="none"
+                        checked={field.value === 'none'}
+                        onChange={() => field.onChange('none')}
+                      />
+                      <span className="ml-2">Just an inquiry (no deposit)</span>
+                    </label>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )} />
