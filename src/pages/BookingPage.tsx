@@ -52,13 +52,22 @@ const       BookingPage: React.FC = () => {
     defaultValues: { name: '', email: '', phone: '', preferred_date: '', experience_level: '', message: '', paymentChoice: 'now' },
   });
 
-  const [showPaymentLinks, setShowPaymentLinks] = useState(false);
-
   const onSubmit = async (data: BookingFormData) => {
     console.log('onSubmit called with data:', data);
     try {
       const amountMajor = depositMajor + totalAddons;
       const addonsText = ADDONS.filter(a => selectedAddons[a.id]).map(a => a.label).join(', ') || 'None';
+      const paymentChoice = data.paymentChoice;
+
+      // If user wants to pay now, redirect immediately
+      if (paymentChoice === 'now' && amountMajor > 0) {
+        window.location.href = `${PAYPAL_LINK}/${amountMajor}THB`;
+        return;
+      }
+
+      const messageWithLink = paymentChoice === 'link' && amountMajor > 0 
+        ? `Add-ons: ${addonsText}\nDeposit: ฿${amountMajor}\nPayPal Link: ${PAYPAL_LINK}/${amountMajor}THB\n\n${data.message || ''}`
+        : `Add-ons: ${addonsText}\nDeposit: ฿${amountMajor}\n\n${data.message || ''}`;
 
       // Save to database
       const { error: dbError } = await supabase.from('booking_inquiries').insert({
@@ -68,7 +77,7 @@ const       BookingPage: React.FC = () => {
         phone: data.phone || null,
         preferred_date: data.preferred_date || null,
         experience_level: data.experience_level || null,
-        message: `Add-ons: ${addonsText}\nDeposit: ฿${amountMajor}\n\n${data.message || ''}`,
+        message: messageWithLink,
       });
 
       if (dbError) {
@@ -85,7 +94,7 @@ const       BookingPage: React.FC = () => {
           phone: data.phone,
           preferred_date: data.preferred_date,
           experience_level: data.experience_level,
-          message: `Add-ons: ${addonsText}\n\n${data.message || ''}`,
+          message: messageWithLink,
           item_title: itemTitle,
           deposit_amount: amountMajor,
         },
@@ -93,13 +102,15 @@ const       BookingPage: React.FC = () => {
 
       if (fnError) console.warn('Email notification failed:', fnError);
 
-      toast.success('Inquiry sent! You can now pay your deposit via PayPal below.');
-      if (amountMajor > 0) {
-        setShowPaymentLinks(true);
+      // If user asked for a payment link, include it in the message (but since we already saved, perhaps send another email or something, but for now, just acknowledge)
+      if (paymentChoice === 'link' && amountMajor > 0) {
+        toast.success('Inquiry sent! A payment link has been included in your confirmation email.');
       } else {
-        form.reset();
-        navigate('/');
+        toast.success('Inquiry sent! We will contact you shortly.');
       }
+
+      form.reset();
+      navigate('/');
     } catch (err) {
       console.error(err);
       toast.error('Submission failed.');
@@ -255,23 +266,6 @@ const       BookingPage: React.FC = () => {
             </div>
           </form>
         </Form>
-
-        {showPaymentLinks && (
-          <div className="mt-8 p-6 border rounded-xl bg-muted/50 text-center space-y-4">
-            <h2 className="text-xl font-bold">Pay Your Deposit</h2>
-            <p className="text-muted-foreground">Your inquiry has been sent! To secure your booking, pay the deposit of <strong>฿{depositMajor + totalAddons}</strong> via PayPal:</p>
-            <a
-              href={`${PAYPAL_LINK}/${depositMajor + totalAddons}THB`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="bg-[#0070ba] hover:bg-[#005ea6] text-white px-8 py-3 text-lg">
-                Pay ฿{depositMajor + totalAddons} with PayPal
-              </Button>
-            </a>
-            <p className="text-sm text-muted-foreground">Or <button className="underline" onClick={() => { form.reset(); setShowPaymentLinks(false); navigate('/'); }}>skip payment for now</button></p>
-          </div>
-        )}
       </div>
     </div>
   );
