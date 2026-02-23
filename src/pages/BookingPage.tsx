@@ -54,6 +54,7 @@ const       BookingPage: React.FC = () => {
   const [showPaymentLinks, setShowPaymentLinks] = useState(false);
 
   const onSubmit = async (data: BookingFormData) => {
+    console.log('onSubmit called with data:', data);
     try {
       const amountMajor = depositMajor + totalAddons;
       const addonsText = ADDONS.filter(a => selectedAddons[a.id]).map(a => a.label).join(', ') || 'None';

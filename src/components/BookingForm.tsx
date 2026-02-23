@@ -64,6 +64,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ isOpen, onClose, itemType, it
   }, [isOpen, itemTitle, form]);
 
   const onSubmit = async (data: BookingFormData) => {
+    console.log('BookingForm onSubmit called with data:', data);
     setIsSubmitting(true);
     try {
       const messageBody = `Phone: ${data.phone || 'N/A'}\nPreferred Date: ${data.preferred_date || 'N/A'}\nExperience Level: ${data.experience_level || 'N/A'}\n\nMessage:\n${data.message || 'N/A'}`;
