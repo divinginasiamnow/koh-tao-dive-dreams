@@ -28,16 +28,15 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", `${formData.firstName} ${formData.lastName}`);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("subject", formData.subject);
-      formDataToSend.append("message", formData.message);
-      formDataToSend.append("access_key", "4ca93aa5-cd42-4902-af87-a08e1ae7c832");
-
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        body: formDataToSend
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        })
       });
       const data = await response.json();
       if (data.success) {
@@ -50,7 +49,7 @@ const Contact = () => {
           message: ''
         });
       } else {
-        toast.error("Send failed. Please try again.");
+        toast.error(data.error || "Send failed. Please try again.");
       }
     } catch (error) {
       console.error('Contact form submission failed:', error);
