@@ -18,6 +18,7 @@ const Hero = () => {
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-2xl mx-auto">
           {t('hero.subtitle')}
+
         </p>
         <div className="space-x-4">
           <a href="/#contact" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
@@ -37,3 +38,13 @@ const Hero = () => {
 };
 
 export default Hero;
+
+<div className="min-h-screen bg-background">
+  <Hero />
+  <About />
+  {/* <DiveSites /> */}
+  <Courses />
+  <FunDiving />
+  <Gallery />
+  <Contact />
+</div>
