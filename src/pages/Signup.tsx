@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -30,7 +30,7 @@ const Signup: React.FC = () => {
         toast.error(error.message || 'Signup failed');
       } else {
         toast.success('Check your email for a confirmation link');
-        navigate('/');
+        navigate('/account');
       }
     } catch (err) {
       console.error(err);
@@ -47,23 +47,32 @@ const Signup: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
+            <Input name="email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Password</label>
-            <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
+            <Input name="password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Confirm password</label>
-            <Input value={confirm} onChange={(e) => setConfirm(e.target.value)} type="password" />
+            <Input name="confirm" value={confirm} onChange={(e) => setConfirm(e.target.value)} type="password" />
           </div>
 
           <Button type="submit" disabled={isLoading} className="w-full">
             {isLoading ? 'Creating account...' : 'Sign up'}
           </Button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link to="/login" className="text-primary hover:underline">
+              Log in here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,15 @@
+
 {
   "version": 2,
   "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
+    },
     {
       "src": "package.json",
       "use": "@vercel/static-build",
@@ -9,8 +18,16 @@
       }
     }
   ],
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
+    { "src": "/api/bookings/([^/]+)/status", "dest": "/api/bookings/[id]/status.js?id=$1" },
+    { "src": "/api/bookings/([^/]+)", "dest": "/api/bookings/[id]/index.js?id=$1" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
     { "handle": "filesystem" },
-    { "src": "^/(.*)$", "dest": "/index.html" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

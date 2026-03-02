@@ -1,7 +1,6 @@
 // Rezdy integration removed — use internal booking flow
 import React, { useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -17,16 +16,45 @@ const bookingSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
   email: z.string().trim().email('Invalid email address').max(255),
   phone: z.string().trim().max(20).optional(),
-  preferred_date: z.string().optional(),
+  preferred_date: z.string().trim().min(1, 'Preferred date is required'),
   experience_level: z.string().optional(),
   message: z.string().trim().max(1000).optional(),
-  paymentChoice: z.enum(['now', 'link', 'none']),
+  paymentChoice: z.enum(['now', 'link', 'none']).optional(),
 });
 
 
 type BookingFormData = z.infer<typeof bookingSchema>;
 
 const PAYPAL_LINK = 'https://paypal.me/divinginasia';
+const COURSE_DEPOSIT_RATE = 0.2;
+
+const COURSE_FALLBACKS: Record<string, { item: string; price?: number; currency?: string }> = {
+  'wreck-diver': { item: 'PADI Wreck Diver Specialty', price: 8000, currency: 'THB' },
+  'deep-diver': { item: 'PADI Deep Diver Specialty', price: 3500, currency: 'THB' },
+  'self-reliant': { item: 'PADI Self-Reliant Diver Specialty', price: 3800, currency: 'THB' },
+  'sidemount': { item: 'PADI Sidemount Diver Specialty', price: 5500, currency: 'THB' },
+  'night-diver': { item: 'PADI Night Diver Specialty', price: 3000, currency: 'THB' },
+  'peak-buoyancy': { item: 'PADI Peak Performance Buoyancy', price: 2800, currency: 'THB' },
+  'navigator': { item: 'PADI Underwater Navigator Specialty', price: 3000, currency: 'THB' },
+  'enriched-air': { item: 'PADI Enriched Air Diver Specialty', price: 2500, currency: 'THB' },
+  'emergency-o2': { item: 'Emergency Oxygen Provider', price: 2500, currency: 'THB' },
+  'dpv': { item: 'PADI DPV Diver Specialty', price: 4200, currency: 'THB' },
+  'search-recovery': { item: 'PADI Search & Recovery Specialty', price: 4000, currency: 'THB' },
+  'coral-watch': { item: 'Coral Watch Specialty', price: 2300, currency: 'THB' },
+  'sea-turtle': { item: 'Sea Turtle Awareness Specialty', price: 2200, currency: 'THB' },
+  'fish-id': { item: 'Fish Identification Specialty', price: 2200, currency: 'THB' },
+  'dive-against-debris': { item: 'Dive Against Debris Specialty', price: 2000, currency: 'THB' },
+  'shark-conservation': { item: 'Shark Conservation Specialty', price: 2500, currency: 'THB' },
+  'whaleshark': { item: 'Whale Shark Awareness Specialty', price: 3500, currency: 'THB' },
+  'underwater-naturalist': { item: 'PADI Underwater Naturalist Specialty', price: 3500, currency: 'THB' },
+  'adaptive-support': { item: 'Adaptive Support Diver Specialty', price: 4000, currency: 'THB' },
+  'current-diver': { item: 'PADI Current Diver Specialty', currency: 'THB' },
+  'photography': { item: 'PADI Underwater Photography Specialty', currency: 'THB' },
+  'equipment-specialist': { item: 'PADI Equipment Specialist', currency: 'THB' },
+  'boat-diver': { item: 'PADI Boat Diver Specialty', currency: 'THB' },
+  'divemaster-internship': { item: 'PADI Divemaster Internship', currency: 'THB' },
+  'instructor-internship': { item: 'PADI Instructor Internship', currency: 'THB' },
+};
 
 const ADDONS = [
   { id: 'equipment', label: 'Equipment rental', amount: 300 },
@@ -37,83 +65,164 @@ const ADDONS = [
 const       BookingPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const itemTitle = searchParams.get('item') || 'Booking';
+  const apiBaseRaw = (import.meta.env.VITE_API_BASE_URL || '').trim();
+  const apiBaseNormalized = apiBaseRaw
+    ? (apiBaseRaw.startsWith('http://') || apiBaseRaw.startsWith('https://')
+        ? apiBaseRaw
+        : `https://${apiBaseRaw}`)
+    : 'https://divinginasia.com';
+  const apiBase = apiBaseNormalized.replace(/\/+$/, '');
+  const apiUrl = (path: string) => `${apiBase}${path}`;
+  const courseSlug = (searchParams.get('course') || '').trim();
+  const fallbackCourse = courseSlug ? COURSE_FALLBACKS[courseSlug] : undefined;
+  const itemTitle = searchParams.get('item') || fallbackCourse?.item || 'Booking';
   const itemType = (searchParams.get('type') as 'course' | 'dive') || 'course';
-  const depositMajor = Number(searchParams.get('deposit') || '0');
-  const depositCurrency = searchParams.get('currency') || 'THB';
+  const isDiveBooking = itemType === 'dive';
+  const rawPrice = searchParams.get('price');
+  const parsedPrice = rawPrice ? Number(rawPrice) : NaN;
+  const courseCostMajor = Number.isFinite(parsedPrice) ? parsedPrice : (fallbackCourse?.price || 0);
+  const depositFromQuery = Number(searchParams.get('deposit') || '0');
+  const depositMajor = itemType === 'course'
+    ? (courseCostMajor > 0 ? Math.round(courseCostMajor * COURSE_DEPOSIT_RATE) : depositFromQuery)
+    : depositFromQuery;
+  const depositCurrency = searchParams.get('currency') || fallbackCourse?.currency || 'THB';
 
   const [selectedAddons, setSelectedAddons] = useState<Record<string, boolean>>({});
   const totalAddons = useMemo(() => {
+    if (!isDiveBooking) return 0;
     return ADDONS.reduce((sum, a) => sum + (selectedAddons[a.id] ? a.amount : 0), 0);
-  }, [selectedAddons]);
+  }, [isDiveBooking, selectedAddons]);
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    defaultValues: { name: '', email: '', phone: '', preferred_date: '', experience_level: '', message: '', paymentChoice: 'now' },
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      preferred_date: new Date().toISOString().slice(0, 10),
+      experience_level: '',
+      message: '',
+      paymentChoice: itemType === 'course' ? 'now' : 'none',
+    },
   });
 
+  const [showPaymentLinks, setShowPaymentLinks] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = async (data: BookingFormData) => {
-    console.log('onSubmit called with data:', data);
+    console.log('Form submitted with data:', data);
+    console.log('Form validation errors:', form.formState.errors);
+    setIsSubmitting(true);
     try {
       const amountMajor = depositMajor + totalAddons;
-      const addonsText = ADDONS.filter(a => selectedAddons[a.id]).map(a => a.label).join(', ') || 'None';
-      const paymentChoice = data.paymentChoice;
+      const selectedAddonsList = isDiveBooking
+        ? ADDONS.filter((addon) => selectedAddons[addon.id]).map((addon) => ({
+            id: addon.id,
+            label: addon.label,
+            amount: addon.amount,
+          }))
+        : [];
+      const addonsText = isDiveBooking
+        ? (ADDONS.filter(a => selectedAddons[a.id]).map(a => a.label).join(', ') || 'None')
+        : 'N/A (course booking)';
 
-      // If user wants to pay now, redirect immediately
-      if (paymentChoice === 'now' && amountMajor > 0) {
-        window.location.href = `${PAYPAL_LINK}/${amountMajor}THB`;
-        return;
-      }
-
-      const messageWithLink = paymentChoice === 'link' && amountMajor > 0 
-        ? `Add-ons: ${addonsText}\nDeposit: ฿${amountMajor}\nPayPal Link: ${PAYPAL_LINK}/${amountMajor}THB\n\n${data.message || ''}`
-        : `Add-ons: ${addonsText}\nDeposit: ฿${amountMajor}\n\n${data.message || ''}`;
-
-      // Save to database
-      const { error: dbError } = await supabase.from('booking_inquiries').insert({
-        course_title: itemTitle,
+      // Prepare Web3Forms payload
+      const payload = {
+        access_key: '4ca93aa5-cd42-4902-af87-a08e1ae7c832',
+        to: 'petergreaney@proton.me',
+        subject: `Booking Inquiry: ${itemTitle}`,
         name: data.name,
         email: data.email,
-        phone: data.phone || null,
-        preferred_date: data.preferred_date || null,
-        experience_level: data.experience_level || null,
-        message: messageWithLink,
+        phone: data.phone || 'N/A',
+        preferred_date: data.preferred_date || 'N/A',
+        experience_level: data.experience_level || 'N/A',
+        payment_choice: data.paymentChoice === 'now' ? 'Pay deposit now via PayPal' : 'Pay later (inquire only)',
+        paypal_link: data.paymentChoice === 'now' ? `${PAYPAL_LINK}/${amountMajor}THB` : null,
+        item_title: itemTitle,
+        deposit_amount: `฿${amountMajor}`,
+        addons: addonsText,
+        message: data.message || 'No additional message',
+      };
+
+      console.log('Sending booking payload to Web3Forms', payload);
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
-      if (dbError) {
-        console.error('DB error:', dbError);
-        toast.error('Failed to save inquiry. Please try again.');
-        return;
-      }
+      const responseData = await res.json().catch(() => ({}));
+      console.log('Web3Forms response:', res.status, responseData);
 
-      // Send email notification via edge function
-      const { error: fnError } = await supabase.functions.invoke('send-booking-notification', {
-        body: {
+      // Persist booking via local API
+      let persisted = false;
+      try {
+        const bookingId = crypto.randomUUID();
+        const body = {
+          id: bookingId,
           name: data.name,
           email: data.email,
-          phone: data.phone,
-          preferred_date: data.preferred_date,
-          experience_level: data.experience_level,
-          message: messageWithLink,
-          item_title: itemTitle,
-          deposit_amount: amountMajor,
-        },
-      });
+          phone: data.phone || undefined,
+          item_type: itemType,
+          course_title: itemTitle,
+          preferred_date: data.preferred_date || new Date().toISOString().slice(0, 10),
+          experience_level: data.experience_level || undefined,
+          addons: addonsText,
+          addons_json: JSON.stringify(selectedAddonsList),
+          addons_total: totalAddons,
+          subtotal_amount: isDiveBooking ? null : courseCostMajor,
+          total_payable_now: amountMajor,
+          message: data.message || undefined,
+          status: 'pending',
+          created_at: new Date().toISOString(),
+        };
 
-      if (fnError) console.warn('Email notification failed:', fnError);
+        const fnRes = await fetch(apiUrl('/api/bookings'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
 
-      // If user asked for a payment link, include it in the message (but since we already saved, perhaps send another email or something, but for now, just acknowledge)
-      if (paymentChoice === 'link' && amountMajor > 0) {
-        toast.success('Inquiry sent! A payment link has been included in your confirmation email.');
-      } else {
-        toast.success('Inquiry sent! We will contact you shortly.');
+        if (!fnRes.ok) {
+          const errJson = await fnRes.json().catch(() => null);
+          const errText = errJson?.error || (await fnRes.text().catch(() => 'unknown'));
+          console.warn('Local API persist failed', fnRes.status, errText);
+        } else {
+          persisted = true;
+          console.log('Booking persisted via local API', bookingId);
+        }
+      } catch (e) {
+        console.warn('Failed to persist booking via local API', e);
       }
 
-      form.reset();
-      navigate('/');
+      // Notify user based on Web3Forms result, but booking is already persisted
+      if (res.ok && responseData.success) {
+        if (persisted) {
+          toast.success('Inquiry sent! You can now pay your deposit via PayPal below.');
+        } else {
+          toast.error('Inquiry sent, but booking was not saved to CRM. Check API/Supabase field names.');
+        }
+        if (data.paymentChoice === 'now' && amountMajor > 0) {
+          setShowPaymentLinks(true);
+        } else {
+          form.reset();
+          navigate('/');
+        }
+      } else {
+        const errMsg = responseData?.message || responseData?.error || `HTTP ${res.status}`;
+        console.error('Web3Forms error:', errMsg, responseData);
+        if (persisted) {
+          toast.error(`Inquiry saved but delivery failed: ${errMsg}. Admin will be notified.`);
+        } else {
+          toast.error(`Submission reached neither CRM nor email reliably (${errMsg}). Please retry.`);
+        }
+      }
     } catch (err) {
-      console.error(err);
-      toast.error('Submission failed.');
+      console.error('Form submission error:', err);
+      toast.error('Submission failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -130,30 +239,44 @@ const       BookingPage: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-lg font-semibold">Deposit</div>
-              <div className="text-2xl font-bold">{depositMajor > 0 ? `฿${depositMajor}` : 'No deposit required'}</div>
+              {itemType === 'course' ? (
+                <>
+                  <div className="text-lg font-semibold">Course cost</div>
+                  <div className="text-2xl font-bold">{courseCostMajor > 0 ? `฿${courseCostMajor}` : 'Contact us'}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Deposit payable now (20%): {depositMajor > 0 ? `฿${depositMajor}` : 'Contact us'}</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-lg font-semibold">Deposit</div>
+                  <div className="text-2xl font-bold">{depositMajor > 0 ? `฿${depositMajor}` : 'No deposit required'}</div>
+                </>
+              )}
             </div>
-            <div className="text-right">
-              <div className="text-lg font-semibold">Add-ons</div>
-              <div className="text-sm text-muted-foreground">Select extras below</div>
-            </div>
+            {isDiveBooking && (
+              <div className="text-right">
+                <div className="text-lg font-semibold">Add-ons</div>
+                <div className="text-sm text-muted-foreground">Select extras below</div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          {ADDONS.map((a) => (
-            <label key={a.id} className="flex items-center gap-3 p-4 border rounded">
-              <input type="checkbox" checked={!!selectedAddons[a.id]} onChange={() => setSelectedAddons(s => ({ ...s, [a.id]: !s[a.id] }))} />
-              <div>
-                <div className="font-medium">{a.label}</div>
-                <div className="text-sm text-muted-foreground">฿{a.amount}</div>
-              </div>
-            </label>
-          ))}
-        </div>
+        {isDiveBooking && (
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {ADDONS.map((a) => (
+              <label key={a.id} className="flex items-center gap-3 p-4 border rounded">
+                <input type="checkbox" checked={!!selectedAddons[a.id]} onChange={() => setSelectedAddons(s => ({ ...s, [a.id]: !s[a.id] }))} />
+                <div>
+                  <div className="font-medium">{a.label}</div>
+                  <div className="text-sm text-muted-foreground">฿{a.amount}</div>
+                </div>
+              </label>
+            ))}
+          </div>
+        )}
 
         <div className="mb-6 text-right">
-          <div className="text-sm text-muted-foreground">Total deposit (incl. add-ons):</div>
+          <div className="text-sm text-muted-foreground">{isDiveBooking ? 'Total payable now (incl. add-ons):' : 'Total payable now:'}</div>
           <div className="text-2xl font-bold">฿{depositMajor + totalAddons}</div>
         </div>
 
@@ -212,46 +335,6 @@ const       BookingPage: React.FC = () => {
               </FormItem>
             )} />
 
-            <FormField control={form.control} name="paymentChoice" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Payment option</FormLabel>
-                <FormControl>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        value="now"
-                        checked={field.value === 'now'}
-                        onChange={() => field.onChange('now')}
-                      />
-                      <span className="ml-2">Pay deposit now</span>
-                    </label>
-
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        value="link"
-                        checked={field.value === 'link'}
-                        onChange={() => field.onChange('link')}
-                      />
-                      <span className="ml-2">Send payment link to my email</span>
-                    </label>
-
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        value="none"
-                        checked={field.value === 'none'}
-                        onChange={() => field.onChange('none')}
-                      />
-                      <span className="ml-2">Just an inquiry (no deposit)</span>
-                    </label>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
             <FormField control={form.control} name="message" render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center gap-2"><MessageSquare className="h-4 w-4" /> Message</FormLabel>
@@ -260,12 +343,76 @@ const       BookingPage: React.FC = () => {
               </FormItem>
             )} />
 
+            <FormField control={form.control} name="paymentChoice" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Payment Method</FormLabel>
+                <FormControl>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        id="payment-now"
+                        name="paymentChoice"
+                        value="now"
+                        checked={field.value === 'now'}
+                        onChange={() => field.onChange('now')}
+                      />
+                      <span>Pay deposit now with PayPal</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        id="payment-none"
+                        name="paymentChoice"
+                        value="none"
+                        checked={field.value === 'none'}
+                        onChange={() => field.onChange('none')}
+                      />
+                      <span>Pay later (inquire only)</span>
+                    </label>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+
             <div className="flex gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => navigate(-1)} className="flex-1">Cancel</Button>
-              <Button type="submit" onClick={() => console.log('submit button clicked')} className="flex-1 bg-primary hover:bg-primary/90">Submit Inquiry</Button>
+              <Button type="submit" disabled={isSubmitting} className="flex-1 bg-primary hover:bg-primary/90">
+                {isSubmitting ? 'Sending...' : 'Submit Inquiry'}
+              </Button>
             </div>
           </form>
         </Form>
+
+        {showPaymentLinks && (
+          <div className="mt-8 p-6 border rounded-xl bg-muted/50 text-center space-y-4">
+            <h2 className="text-xl font-bold">Pay Your Deposit</h2>
+            <p className="text-muted-foreground">Your inquiry has been sent! To secure your booking, pay the deposit of <strong>฿{depositMajor + totalAddons}</strong> via PayPal:</p>
+            <div className="space-y-3">
+              <a
+                href={`${PAYPAL_LINK}/${depositMajor + totalAddons}THB`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-[#0070ba] hover:bg-[#005ea6] text-white px-8 py-3 text-lg w-full">
+                  Pay ฿{depositMajor + totalAddons} with PayPal
+                </Button>
+              </a>
+              <p className="text-sm text-muted-foreground">or</p>
+              <a
+                href={PAYPAL_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" className="px-8 py-3 text-lg w-full">
+                  Open PayPal.me/divinginasia
+                </Button>
+              </a>
+            </div>
+            <p className="text-sm text-muted-foreground">Or <button className="underline" onClick={() => { form.reset(); setShowPaymentLinks(false); navigate('/'); }}>skip payment for now</button></p>
+          </div>
+        )}
       </div>
     </div>
   );
